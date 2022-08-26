@@ -91,8 +91,10 @@ class TestWithParam:
     def test_create_user_by_id(self, api_con, params):
         """created user by correct params id"""
         rez = api_con.create_user(params(id=1))
-        assert rez[0] == 200
-        assert rez[1]['message'] == '1'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 200
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert rez[1]['message'] == '1'
 
     @allure.feature("Creates list of users /user/createWithList")
     @allure.story('Создаем список пользователей с указанием корректных параметров')
@@ -100,8 +102,10 @@ class TestWithParam:
     def test_create_user_with_list_by_id(self, api_con, params):
         """created user with correct list params id"""
         rez = api_con.create_user_with_list(params(id=2))
-        assert rez[0] == 200
-        assert rez[1]['message'] == 'ok'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 200
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert rez[1]['message'] == 'ok'
 
     @allure.feature("Get user /user/{username}")
     @allure.story('Получаем информацию о пользователе по корректному параметру username')
@@ -109,8 +113,10 @@ class TestWithParam:
     def test_get_user_by_name(self, add_one_user):
         """get user by correct name"""
         rez = add_one_user.get_user_name('test')
-        assert rez[0] == 200
-        assert rez[1]['username'] == 'test'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 200
+        with allure.step("Проверяем содержание поля username ответа"):
+            assert rez[1]['username'] == 'test'
 
     @allure.feature("Delete user /user/{username}")
     @allure.story('Удаляем пользователя по корректному параметру username')
@@ -118,8 +124,10 @@ class TestWithParam:
     def test_delete_user_by_name(self, add_one_user):
         """deleted user by correct name"""
         rez = add_one_user.delete_user('test')
-        assert rez[0] == 200
-        assert rez[1]['message'] == 'test'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 200
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert rez[1]['message'] == 'test'
 
     @allure.feature("Updated user /user/{username}")
     @allure.story('Обновляем пользователя по корректному параметру username')
@@ -127,8 +135,10 @@ class TestWithParam:
     def test_update_by_name(self, add_one_user, params):
         """updated user by correct name"""
         rez = add_one_user.update_user('test', params(id=100, email='test@test.ru'))
-        assert rez[0] == 200
-        assert rez[1]['message'] == '100'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 200
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert rez[1]['message'] == '100'
 
     @allure.feature("Login user into the system  /user/login")
     @allure.story('Выполняем вход пользователя по корректным параметрам username, password')
@@ -136,76 +146,99 @@ class TestWithParam:
     def test_login_user_by_name_password(self, add_one_user):
         """logged user by correct name and password"""
         rez = add_one_user.login_user(name='test', password='12345')
-        assert rez[0] == 200
-        assert 'logged in user session:' in rez[1]['message']
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 200
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert 'logged in user session:' in rez[1]['message']
 
     @allure.feature("Logs out current logged users  /user/logout")
     @allure.story('Выполняем выход предварительно залогиненного пользователя')
     @pytest.mark.logout_user
     def test_logout_user(self, add_one_user):
         """logout user session"""
-        _ = add_one_user.login_user(name='test', password='12345')
+        with allure.step("Выполняем предварительный вход пользователя"):
+            _ = add_one_user.login_user(name='test', password='12345')
         rez = add_one_user.logout_user()
-        assert rez[0] == 200
-        assert rez[1]['message'] == 'ok'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 200
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert rez[1]['message'] == 'ok'
 
 
 class TestWrongParameters:
     """tests with wrong params"""
 
     @allure.feature("Create user /user")
+    @allure.story('Создаем пользователя с некорректным id')
     @pytest.mark.create_user
     @pytest.mark.xfail
     def test_create_user_wrong_param(self, api_con, params):
         """created user by wrong-id"""
         rez = api_con.create_user(params(id="test"))
-        assert rez[0] == 400
-        assert rez[1]['message'] == 'bad input'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 400
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert rez[1]['message'] == 'bad input'
 
     @allure.feature("Creates list of users /user/createWithList")
+    @allure.story('Создаем пользователей списком с некорректным id')
     @pytest.mark.create_user_with_list
     @pytest.mark.xfail
     def test_create_user_with_list_wrong_param(self, api_con, params):
         """created user with list params wrong-id"""
         rez = api_con.create_user_with_list(params(id="test"))
-        assert rez[0] == 400
-        assert rez[1]['message'] == 'bad input'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 400
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert rez[1]['message'] == 'bad input'
 
     @allure.feature("Get user /user/{username}")
+    @allure.story('Получаем информацию о пользователе с некорректным username')
     @pytest.mark.get_user
     def test_get_user_by_wrong_name(self, add_one_user):
         """get user by wrong name"""
         rez = add_one_user.get_user_name('111')
-        assert rez[0] == 404
-        assert rez[1]['message'] == 'User not found'
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 404
+        with allure.step("Проверяем содержание поля message ответа"):
+            assert rez[1]['message'] == 'User not found'
 
     @allure.feature("Delete user /user/{username}")
+    @allure.story('Удаляяем пользователя с некорректным username')
     @pytest.mark.delete_user
     def test_delete_user_by_wrong_name(self, add_one_user):
         """deleted user by wrong name"""
-        assert add_one_user.delete_user('test1')[0] == 404
+        rez = add_one_user.delete_user('test1')
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 404
 
     @allure.feature("Updated user /user/{username}")
+    @allure.story('Обновляем пользователя с некорректным username')
     @pytest.mark.update_user
     @pytest.mark.xfail
     def test_update_by_wrong_name(self, add_one_user, params):
         """updated user by wrong name"""
         rez = add_one_user.update_user('test_user', params(id=100, email='test@test.ru'))
-        assert rez[0] == 404
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 404
 
     @allure.feature("Login user into the system  /user/login")
+    @allure.story('Выполняем вход пользователя с некорректным username')
     @pytest.mark.login_user
     @pytest.mark.xfail
     def test_login_user_by_wrong_name(self, add_one_user):
         """logged user by wrong name and correct password"""
         rez = add_one_user.login_user(name='test1', password='12345')
-        assert rez[0] == 400
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 400
 
     @allure.feature("Login user into the system  /user/login")
+    @allure.story('Выполняем вход пользователя с некорректным password')
     @pytest.mark.login_user
     @pytest.mark.xfail
     def test_login_user_by_wrong_password(self, add_one_user):
         """logged user by correct name and wrong password"""
         rez = add_one_user.login_user(name='test', password='1')
-        assert rez[0] == 400
+        with allure.step("Запрос отправлен, проверяем код ответа"):
+            assert rez[0] == 400
 
