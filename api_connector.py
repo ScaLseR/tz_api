@@ -1,5 +1,5 @@
 """connector for api"""
-from json import dumps, loads
+from json import loads, dumps
 from dataclasses import dataclass, asdict
 import requests
 
@@ -7,7 +7,7 @@ import requests
 @dataclass
 class ParamsReq:
     """structure for requests parameters"""
-    id: any
+    id: int = 0
     username: str = ''
     firstName: str = ''
     lastName: str = ''
@@ -16,7 +16,7 @@ class ParamsReq:
     phone: str = ''
     userStatus: int = 0
 
-    def to_json(self):
+    def to_dict(self):
         """convert to dict structure ParamsReq"""
         return asdict(self)
 
@@ -35,12 +35,22 @@ class ApiConnector:
 
     def __init__(self, url):
         self.url = url
+        self.list_param = []
 
     def create_user(self, params: ParamsReq = '') -> tuple:
-        """create user"""
+        """create user by params"""
         if params == '':
             response = requests.post(url=self.url + _CREATE_USER)
         else:
-            print('params.to_json()=== ', params.to_json())
-            response = requests.post(url=self.url + _CREATE_USER, json=params.to_json())
+            response = requests.post(url=self.url + _CREATE_USER, json=params.to_dict())
+        return response.status_code, loads(response.content.decode('utf-8'))
+
+    def create_user_with_list(self, params: ParamsReq = '') -> tuple:
+        """create user with list"""
+
+        if params == '':
+            response = requests.post(url=self.url + _CREATE_USER_WITH_LIST)
+        else:
+            self.list_param.append(params.to_dict())
+            response = requests.post(url=self.url + _CREATE_USER_WITH_LIST, json=self.list_param)
         return response.status_code, loads(response.content.decode('utf-8'))
