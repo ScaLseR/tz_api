@@ -73,5 +73,11 @@ class ApiConnector:
                 return response.status_code, loads(response.content.decode('utf-8'))
         return response.status_code,
 
-    def update_user(self, name: str = '', params: ParamsReq = ''):
+    def update_user(self, name: str = '', params: ParamsReq = '') -> tuple:
         """updated user by name"""
+        if name == '':
+            response = requests.delete(url=self.url + _UPDATED_USER)
+        else:
+            response = requests.put(url=self.url + _UPDATED_USER + name, json=params.to_dict())
+            return response.status_code, loads(response.content.decode('utf-8'))
+        return response.status_code,
