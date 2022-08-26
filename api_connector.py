@@ -54,10 +54,21 @@ class ApiConnector:
             response = requests.post(url=self.url + _CREATE_USER_WITH_LIST, json=self.list_param)
         return response.status_code, loads(response.content.decode('utf-8'))
 
-    def get_user_name(self, name: str = '') -> tuple:
+    def get_user_name(self, name: str = ''):
         """get user by name"""
         if name == '':
-            response = requests.get(url=self.url + _GET_USER_NAME + ' ')
+            response = requests.get(url=self.url + _GET_USER_NAME)
+            return response.status_code
         else:
             response = requests.get(url=self.url + _GET_USER_NAME + name)
-        return response.status_code, loads(response.content.decode('utf-8'))
+            return response.status_code, loads(response.content.decode('utf-8'))
+
+    def delete_user(self, name: str = ''):
+        """deleted user by name"""
+        if name == '':
+            response = requests.delete(url=self.url + _DELETE_USER)
+        else:
+            response = requests.delete(url=self.url + _DELETE_USER + name)
+            if response.status_code == 200:
+                return response.status_code, loads(response.content.decode('utf-8'))
+        return response.status_code

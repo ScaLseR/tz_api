@@ -3,9 +3,7 @@ import pytest
 
 
 class TestNoParam:
-
     """tests with empty parameters"""
-
     @pytest.mark.create_user
     def test_create_user_without_param(self, api_con):
         """created user without params"""
@@ -19,13 +17,14 @@ class TestNoParam:
     @pytest.mark.get_user
     def test_get_user_without_name(self, api_con):
         """get user by wrong name"""
-        rez = api_con.get_user_name()
-        assert rez[0] == 404
-        assert rez[1]['message'] == 'User not found'
+        assert api_con.get_user_name() == 405
+
+    def test_delete_without_name(self, api_con):
+        """deleted user without name"""
+        assert api_con.delete_user() == 405
 
 
 class TestWithParam:
-
     """tests with parameters"""
     @pytest.mark.create_user
     def test_create_user_by_id(self, api_con, params):
@@ -48,10 +47,15 @@ class TestWithParam:
         assert rez[0] == 200
         assert rez[1]['username'] == 'test'
 
+    def test_delete_user_by_name(self, add_one_user):
+        """deleted user by name"""
+        rez = add_one_user.delete_user('test')
+        assert rez[0] == 200
+        assert rez[1]['message'] == 'test'
+
 
 class TestWrongParameters:
     """tests with wrong params"""
-
     @pytest.mark.create_user
     @pytest.mark.xfail
     def test_create_user_wrong_param(self, api_con, params):
@@ -74,3 +78,7 @@ class TestWrongParameters:
         rez = add_one_user.get_user_name('111')
         assert rez[0] == 404
         assert rez[1]['message'] == 'User not found'
+
+    def test_delete_user_by_name(self, add_one_user):
+        """deleted user by name"""
+        assert add_one_user.delete_user('test1') == 404
