@@ -11,7 +11,8 @@ class TestNoParam:
     @pytest.mark.create_user
     def test_create_user_without_param(self, api_con):
         """created user without params"""
-        rez = api_con.create_user()
+        with allure.step("Создаем пользователя"):
+            rez = api_con.create_user()
         with allure.step(f"Запрос отправлен, проверяем код ответа {rez[0]} == 415"):
             assert rez[0] == 415, f'Неверный код ответа, получен {rez[0]}'
 
@@ -20,7 +21,8 @@ class TestNoParam:
     @pytest.mark.create_user_with_list
     def test_create_user_with_list_without_param(self, api_con):
         """created user with list without params"""
-        rez = api_con.create_user_with_list()
+        with allure.step("Создаем пользователя"):
+            rez = api_con.create_user_with_list()
         with allure.step(f"Запрос отправлен, проверяем код ответа {rez[0]} == 415"):
             assert rez[0] == 415, f'Неверный код ответа, получен {rez[0]}'
 
@@ -29,7 +31,8 @@ class TestNoParam:
     @pytest.mark.get_user
     def test_get_user_without_name(self, api_con):
         """get user by wrong name"""
-        rez = api_con.get_user_name()
+        with allure.step("Получаем пользователя"):
+            rez = api_con.get_user_name()
         with allure.step(f"Запрос отправлен, проверяем код ответа {rez[0]} == 405"):
             assert rez[0] == 405, f'Неверный код ответа, получен {rez[0]}'
 
@@ -38,7 +41,8 @@ class TestNoParam:
     @pytest.mark.delete_user
     def test_delete_without_name(self, api_con):
         """deleted user without name"""
-        rez = api_con.delete_user()
+        with allure.step("Удаляем пользователя"):
+            rez = api_con.delete_user()
         with allure.step(f"Запрос отправлен, проверяем код ответа {rez[0]} == 405"):
             assert rez[0] == 405, f'Неверный код ответа, получен {rez[0]}'
 
@@ -47,7 +51,8 @@ class TestNoParam:
     @pytest.mark.update_user
     def test_update_without_name(self, api_con):
         """updated user without name"""
-        rez = api_con.update_user()
+        with allure.step("Обновляем пользователя"):
+            rez = api_con.update_user()
         with allure.step(f"Запрос отправлен, проверяем код ответа {rez[0]} == 405"):
             assert rez[0] == 405, f'Неверный код ответа, получен {rez[0]}'
 
