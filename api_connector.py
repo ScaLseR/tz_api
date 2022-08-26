@@ -2,6 +2,7 @@
 from json import loads
 from dataclasses import dataclass, asdict
 import requests
+import allure
 
 
 @dataclass
@@ -43,7 +44,8 @@ class ApiConnector:
             response = requests.post(url=self.url + _CREATE_USER)
         else:
             response = requests.post(url=self.url + _CREATE_USER, json=params.to_dict())
-        return response.status_code, loads(response.content.decode('utf-8'))
+        with allure.step(f'POST request to: {self.url + _CREATE_USER}'):
+            return response.status_code, loads(response.content.decode('utf-8'))
 
     def create_user_with_list(self, params: ParamsReq = '') -> tuple:
         """create user with list"""
@@ -52,16 +54,19 @@ class ApiConnector:
         else:
             self.list_param.append(params.to_dict())
             response = requests.post(url=self.url + _CREATE_USER_WITH_LIST, json=self.list_param)
-        return response.status_code, loads(response.content.decode('utf-8'))
+        with allure.step(f'POST request to: {self.url + _CREATE_USER_WITH_LIST}'):
+            return response.status_code, loads(response.content.decode('utf-8'))
 
     def get_user_name(self, name: str = '') -> tuple:
         """get user by name"""
         if name == '':
             response = requests.get(url=self.url + _GET_USER_NAME)
-            return response.status_code,
+            with allure.step(f'GET request to: {self.url + _GET_USER_NAME}'):
+                return response.status_code,
         else:
             response = requests.get(url=self.url + _GET_USER_NAME + name)
-            return response.status_code, loads(response.content.decode('utf-8'))
+            with allure.step(f'GET request to: {self.url + _GET_USER_NAME + name}'):
+                return response.status_code, loads(response.content.decode('utf-8'))
 
     def delete_user(self, name: str = '') -> tuple:
         """deleted user by name"""
@@ -70,24 +75,30 @@ class ApiConnector:
         else:
             response = requests.delete(url=self.url + _DELETE_USER + name)
             if response.status_code == 200:
-                return response.status_code, loads(response.content.decode('utf-8'))
-        return response.status_code,
+                with allure.step(f'DELETE request to: {self.url + _DELETE_USER + name}'):
+                    return response.status_code, loads(response.content.decode('utf-8'))
+        with allure.step(f'DELETE request to: {self.url + _DELETE_USER}'):
+            return response.status_code,
 
     def update_user(self, name: str = '', params: ParamsReq = '') -> tuple:
         """updated user by name"""
         if name == '':
-            response = requests.delete(url=self.url + _UPDATED_USER)
+            response = requests.put(url=self.url + _UPDATED_USER)
         else:
             response = requests.put(url=self.url + _UPDATED_USER + name, json=params.to_dict())
-            return response.status_code, loads(response.content.decode('utf-8'))
-        return response.status_code,
+            with allure.step(f'DELETE request to: {self.url + _UPDATED_USER + name}'):
+                return response.status_code, loads(response.content.decode('utf-8'))
+        with allure.step(f'PUT request to: {self.url + _UPDATED_USER}'):
+            return response.status_code,
 
     def login_user(self, name: str = '', password: str = ''):
         """logged user by username and password"""
         response = requests.get(url=self.url + _LOGIN_USER, params=dict(username=name, password=password))
-        return response.status_code, loads(response.content.decode('utf-8'))
+        with allure.step(f'GET request to: {self.url + _LOGIN_USER}'):
+            return response.status_code, loads(response.content.decode('utf-8'))
 
     def logout_user(self):
         """logout user from service"""
         response = requests.get(url=self.url + _LOGOUT_USER)
-        return response.status_code, loads(response.content.decode('utf-8'))
+        with allure.step(f'GET request to: {self.url + _LOGOUT_USER}'):
+            return response.status_code, loads(response.content.decode('utf-8'))
