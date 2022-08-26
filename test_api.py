@@ -29,43 +29,68 @@ class TestNoParam:
         """updated user without name"""
         assert api_con.update_user()[0] == 405
 
+    @pytest.mark.login_user
+    @pytest.mark.xfail
+    def test_login_user_without_name(self, api_con):
+        """logged user without name"""
+        assert api_con.login_user(password='12345')[0] == 400
+
+    @pytest.mark.login_user
+    @pytest.mark.xfail
+    def test_login_user_without_password(self, api_con):
+        """logged user without password"""
+        assert api_con.login_user(name='test')[0] == 400
+
+    @pytest.mark.login_user
+    @pytest.mark.xfail
+    def test_login_user_without_name_password(self, api_con):
+        """logged user without password"""
+        assert api_con.login_user()[0] == 400
+
 
 class TestWithParam:
     """tests with parameters"""
     @pytest.mark.create_user
     def test_create_user_by_id(self, api_con, params):
-        """created user by params id"""
+        """created user by correct params id"""
         rez = api_con.create_user(params(id=1))
         assert rez[0] == 200
         assert rez[1]['message'] == '1'
 
     @pytest.mark.create_user_with_list
     def test_create_user_with_list_by_id(self, api_con, params):
-        """created user with list params id"""
+        """created user with correct list params id"""
         rez = api_con.create_user_with_list(params(id=2))
         assert rez[0] == 200
         assert rez[1]['message'] == 'ok'
 
     @pytest.mark.get_user
     def test_get_user_by_name(self, add_one_user):
-        """get user by name"""
+        """get user by correct name"""
         rez = add_one_user.get_user_name('test')
         assert rez[0] == 200
         assert rez[1]['username'] == 'test'
 
     @pytest.mark.delete_user
     def test_delete_user_by_name(self, add_one_user):
-        """deleted user by name"""
+        """deleted user by correct name"""
         rez = add_one_user.delete_user('test')
         assert rez[0] == 200
         assert rez[1]['message'] == 'test'
 
     @pytest.mark.update_user
     def test_update_by_name(self, add_one_user, params):
-        """updated user by name"""
+        """updated user by correct name"""
         rez = add_one_user.update_user('test', params(id=100, email='test@test.ru'))
         assert rez[0] == 200
         assert rez[1]['message'] == '100'
+
+    @pytest.mark.login_user
+    def test_login_user_by_name_password(self, add_one_user):
+        """logged user by correct name and password"""
+        rez = add_one_user.login_user(name='test', password='12345')
+        assert rez[0] == 200
+        assert 'logged in user session:' in rez[1]['message']
 
 
 class TestWrongParameters:
@@ -104,3 +129,18 @@ class TestWrongParameters:
         """updated user by wrong name"""
         rez = add_one_user.update_user('test_user', params(id=100, email='test@test.ru'))
         assert rez[0] == 404
+
+    @pytest.mark.login_user
+    @pytest.mark.xfail
+    def test_login_user_by_wrong_name(self, add_one_user):
+        """logged user by wrong name and correct password"""
+        rez = add_one_user.login_user(name='test1', password='12345')
+        assert rez[0] == 400
+
+    @pytest.mark.login_user
+    @pytest.mark.xfail
+    def test_login_user_by_wrong_password(self, add_one_user):
+        """logged user by correct name and wrong password"""
+        rez = add_one_user.login_user(name='test', password='1')
+        assert rez[0] == 400
+

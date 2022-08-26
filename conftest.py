@@ -10,7 +10,7 @@ def api_con(url):
     return api_con
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function')
 def params():
     """created data class for parameters to requests"""
     params = ParamsReq
@@ -27,6 +27,6 @@ def url():
 @pytest.fixture(scope='function')
 def add_one_user(api_con, params):
     """added one user by name"""
-    _ = api_con.create_user(params(id=111, username='test', password='12345'))
+    _ = api_con.create_user(params(id=100, username='test', password='12345'))
     yield api_con
     _ = api_con.delete_user('test')

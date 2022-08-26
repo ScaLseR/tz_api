@@ -81,3 +81,8 @@ class ApiConnector:
             response = requests.put(url=self.url + _UPDATED_USER + name, json=params.to_dict())
             return response.status_code, loads(response.content.decode('utf-8'))
         return response.status_code,
+
+    def login_user(self, name: str = '', password: str = ''):
+        """logged user by username and password"""
+        response = requests.get(url=self.url + _LOGIN_USER, params=dict(username=name, password=password))
+        return response.status_code, loads(response.content.decode('utf-8'))
