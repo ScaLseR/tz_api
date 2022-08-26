@@ -22,3 +22,11 @@ def url():
     """get api url """
     url = 'https://petstore.swagger.io/v2'
     return url
+
+
+@pytest.fixture(scope='function')
+def add_one_user(api_con, params):
+    """added one user by name"""
+    _ = api_con.create_user(params(id=111, username='test'))
+    yield api_con
+    pass
