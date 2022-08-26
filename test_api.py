@@ -17,11 +17,11 @@ class TestNoParam:
     @pytest.mark.get_user
     def test_get_user_without_name(self, api_con):
         """get user by wrong name"""
-        assert api_con.get_user_name() == 405
+        assert api_con.get_user_name()[0] == 405
 
     def test_delete_without_name(self, api_con):
         """deleted user without name"""
-        assert api_con.delete_user() == 405
+        assert api_con.delete_user()[0] == 405
 
 
 class TestWithParam:
@@ -81,4 +81,4 @@ class TestWrongParameters:
 
     def test_delete_user_by_name(self, add_one_user):
         """deleted user by name"""
-        assert add_one_user.delete_user('test1') == 404
+        assert add_one_user.delete_user('test1')[0] == 404
