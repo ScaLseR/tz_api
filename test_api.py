@@ -92,6 +92,14 @@ class TestWithParam:
         assert rez[0] == 200
         assert 'logged in user session:' in rez[1]['message']
 
+    @pytest.mark.logout_user
+    def test_logout_user(self, add_one_user):
+        """logout user session"""
+        _ = add_one_user.login_user(name='test', password='12345')
+        rez = add_one_user.logout_user()
+        assert rez[0] == 200
+        assert rez[1]['message'] == 'ok'
+
 
 class TestWrongParameters:
     """tests with wrong params"""

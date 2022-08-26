@@ -86,3 +86,8 @@ class ApiConnector:
         """logged user by username and password"""
         response = requests.get(url=self.url + _LOGIN_USER, params=dict(username=name, password=password))
         return response.status_code, loads(response.content.decode('utf-8'))
+
+    def logout_user(self):
+        """logout user from service"""
+        response = requests.get(url=self.url + _LOGOUT_USER)
+        return response.status_code, loads(response.content.decode('utf-8'))
