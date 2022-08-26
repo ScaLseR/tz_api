@@ -7,7 +7,7 @@ import requests
 @dataclass
 class ParamsReq:
     """structure for requests parameters"""
-    id: int = 0
+    id: any
     username: str = ''
     firstName: str = ''
     lastName: str = ''
@@ -36,10 +36,11 @@ class ApiConnector:
     def __init__(self, url):
         self.url = url
 
-    def create_user(self, params: ParamsReq):
+    def create_user(self, params: ParamsReq = '') -> tuple:
         """create user"""
-        response = requests.post(url=self.url + _CREATE_USER, json=params.to_json())
-        if response.status_code == 200:
-            return response.status_code, loads(response.content.decode('utf-8'))
-        return response.status_code
-
+        if params == '':
+            response = requests.post(url=self.url + _CREATE_USER)
+        else:
+            print('params.to_json()=== ', params.to_json())
+            response = requests.post(url=self.url + _CREATE_USER, json=params.to_json())
+        return response.status_code, loads(response.content.decode('utf-8'))
