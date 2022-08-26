@@ -41,39 +41,41 @@ class ApiConnector:
     def create_user(self, params: ParamsReq = '') -> tuple:
         """create user by params"""
         if params == '':
-            response = requests.post(url=self.url + _CREATE_USER)
+            response = requests.post(url=self.url + _CREATE_USER, timeout=5)
         else:
-            response = requests.post(url=self.url + _CREATE_USER, json=params.to_dict())
+            response = requests.post(url=self.url + _CREATE_USER,
+                                     json=params.to_dict(), timeout=5)
         with allure.step(f'POST request to: {self.url + _CREATE_USER}'):
             return response.status_code, loads(response.content.decode('utf-8'))
 
     def create_user_with_list(self, params: ParamsReq = '') -> tuple:
         """create user with list"""
         if params == '':
-            response = requests.post(url=self.url + _CREATE_USER_WITH_LIST)
+            response = requests.post(url=self.url + _CREATE_USER_WITH_LIST, timeout=5)
         else:
             self.list_param.append(params.to_dict())
-            response = requests.post(url=self.url + _CREATE_USER_WITH_LIST, json=self.list_param)
+            response = requests.post(url=self.url + _CREATE_USER_WITH_LIST,
+                                     json=self.list_param, timeout=5)
         with allure.step(f'POST request to: {self.url + _CREATE_USER_WITH_LIST}'):
             return response.status_code, loads(response.content.decode('utf-8'))
 
     def get_user_name(self, name: str = '') -> tuple:
         """get user by name"""
         if name == '':
-            response = requests.get(url=self.url + _GET_USER_NAME)
+            response = requests.get(url=self.url + _GET_USER_NAME, timeout=5)
             with allure.step(f'GET request to: {self.url + _GET_USER_NAME}'):
                 return response.status_code,
         else:
-            response = requests.get(url=self.url + _GET_USER_NAME + name)
+            response = requests.get(url=self.url + _GET_USER_NAME + name, timeout=5)
             with allure.step(f'GET request to: {self.url + _GET_USER_NAME + name}'):
                 return response.status_code, loads(response.content.decode('utf-8'))
 
     def delete_user(self, name: str = '') -> tuple:
         """deleted user by name"""
         if name == '':
-            response = requests.delete(url=self.url + _DELETE_USER)
+            response = requests.delete(url=self.url + _DELETE_USER, timeout=5)
         else:
-            response = requests.delete(url=self.url + _DELETE_USER + name)
+            response = requests.delete(url=self.url + _DELETE_USER + name, timeout=5)
             if response.status_code == 200:
                 with allure.step(f'DELETE request to: {self.url + _DELETE_USER + name}'):
                     return response.status_code, loads(response.content.decode('utf-8'))
@@ -83,22 +85,24 @@ class ApiConnector:
     def update_user(self, name: str = '', params: ParamsReq = '') -> tuple:
         """updated user by name"""
         if name == '':
-            response = requests.put(url=self.url + _UPDATED_USER)
+            response = requests.put(url=self.url + _UPDATED_USER, timeout=5)
         else:
-            response = requests.put(url=self.url + _UPDATED_USER + name, json=params.to_dict())
+            response = requests.put(url=self.url + _UPDATED_USER + name,
+                                    json=params.to_dict(), timeout=5)
             with allure.step(f'DELETE request to: {self.url + _UPDATED_USER + name}'):
                 return response.status_code, loads(response.content.decode('utf-8'))
         with allure.step(f'PUT request to: {self.url + _UPDATED_USER}'):
             return response.status_code,
 
-    def login_user(self, name: str = '', password: str = ''):
+    def login_user(self, name: str = '', password: str = '') -> tuple:
         """logged user by username and password"""
-        response = requests.get(url=self.url + _LOGIN_USER, params=dict(username=name, password=password))
+        response = requests.get(url=self.url + _LOGIN_USER,
+                                params=dict(username=name, password=password), timeout=5)
         with allure.step(f'GET request to: {self.url + _LOGIN_USER}'):
             return response.status_code, loads(response.content.decode('utf-8'))
 
-    def logout_user(self):
+    def logout_user(self) -> tuple:
         """logout user from service"""
-        response = requests.get(url=self.url + _LOGOUT_USER)
+        response = requests.get(url=self.url + _LOGOUT_USER, timeout=5)
         with allure.step(f'GET request to: {self.url + _LOGOUT_USER}'):
             return response.status_code, loads(response.content.decode('utf-8'))
