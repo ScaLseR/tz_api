@@ -16,6 +16,8 @@ def logging():
     logger.info('Stop test')
     with allure.step('Log file'):
         allure.attach.file(r'logs/log.txt', 'log.txt', attachment_type=AttachmentType.TEXT)
+    f = open(r'logs/log.txt', 'w')
+    f.close()
 
 
 @pytest.fixture(scope='function')
