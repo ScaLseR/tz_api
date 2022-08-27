@@ -153,7 +153,7 @@ class ApiConnector:
             return response.status_code, loads(response.content.decode('utf-8'))
 
     @staticmethod
-    def logging_request(method, url, text):
+    def logging_request(method: str, url: str, text: str):
         """login response and request"""
         logger.info(f'{method} request to: {url}')
         logger.info(f'response text - {text}')
