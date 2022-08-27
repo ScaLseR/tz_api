@@ -1,7 +1,7 @@
 """connector for api"""
 from json import loads
 from dataclasses import dataclass, asdict
-import requests
+from requests import request
 import allure
 import logging
 
@@ -48,10 +48,12 @@ class ApiConnector:
     def create_user(self, params: ParamsReq = '') -> tuple:
         """create user by params"""
         if params == '':
-            response = requests.post(url=self.url + _CREATE_USER, timeout=5)
+            response = request(method=_METHOD[_CREATE_USER],
+                               url=self.url + _CREATE_USER, timeout=5)
         else:
-            response = requests.post(url=self.url + _CREATE_USER,
-                                     json=params.to_dict(), timeout=5)
+            response = request(method=_METHOD[_CREATE_USER],
+                               url=self.url + _CREATE_USER,
+                               json=params.to_dict(), timeout=5)
         with allure.step(f'{_METHOD[_CREATE_USER]} request to: '
                          f'{self.url + _CREATE_USER}'):
             self.logging_request(_METHOD[_CREATE_USER],
@@ -61,11 +63,13 @@ class ApiConnector:
     def create_user_with_list(self, params: ParamsReq = '') -> tuple:
         """create user with list"""
         if params == '':
-            response = requests.post(url=self.url + _CREATE_USER_WITH_LIST, timeout=5)
+            response = request(method=_METHOD[_CREATE_USER_WITH_LIST],
+                               url=self.url + _CREATE_USER_WITH_LIST, timeout=5)
         else:
             self.list_param.append(params.to_dict())
-            response = requests.post(url=self.url + _CREATE_USER_WITH_LIST,
-                                     json=self.list_param, timeout=5)
+            response = request(method=_METHOD[_CREATE_USER_WITH_LIST],
+                               url=self.url + _CREATE_USER_WITH_LIST,
+                               json=self.list_param, timeout=5)
         with allure.step(f'{_METHOD[_CREATE_USER_WITH_LIST]} request to: '
                          f'{self.url + _CREATE_USER_WITH_LIST}'):
             self.logging_request(_METHOD[_CREATE_USER_WITH_LIST],
@@ -75,14 +79,16 @@ class ApiConnector:
     def get_user_name(self, name: str = '') -> tuple:
         """get user by name"""
         if name == '':
-            response = requests.get(url=self.url + _GET_USER_NAME, timeout=5)
+            response = request(method=_METHOD[_GET_USER_NAME],
+                               url=self.url + _GET_USER_NAME, timeout=5)
             with allure.step(f'{_METHOD[_GET_USER_NAME]} request to: '
                              f'{self.url + _GET_USER_NAME}'):
                 self.logging_request(_METHOD[_GET_USER_NAME],
                                      self.url + _GET_USER_NAME, response.text)
                 return response.status_code,
         else:
-            response = requests.get(url=self.url + _GET_USER_NAME + name, timeout=5)
+            response = request(method=_METHOD[_GET_USER_NAME],
+                               url=self.url + _GET_USER_NAME + name, timeout=5)
             with allure.step(f'{_METHOD[_GET_USER_NAME]} request to: '
                              f'{self.url + _GET_USER_NAME + name}'):
                 self.logging_request(_METHOD[_GET_USER_NAME],
@@ -92,9 +98,11 @@ class ApiConnector:
     def delete_user(self, name: str = '') -> tuple:
         """deleted user by name"""
         if name == '':
-            response = requests.delete(url=self.url + _DELETE_USER, timeout=5)
+            response = request(method=_METHOD[_DELETE_USER],
+                               url=self.url + _DELETE_USER, timeout=5)
         else:
-            response = requests.delete(url=self.url + _DELETE_USER + name, timeout=5)
+            response = request(method=_METHOD[_DELETE_USER],
+                               url=self.url + _DELETE_USER + name, timeout=5)
             if response.status_code == 200:
                 with allure.step(f'{_METHOD[_DELETE_USER]} request to: '
                                  f'{self.url + _DELETE_USER + name}'):
@@ -109,10 +117,12 @@ class ApiConnector:
     def update_user(self, name: str = '', params: ParamsReq = '') -> tuple:
         """updated user by name"""
         if name == '':
-            response = requests.put(url=self.url + _UPDATED_USER, timeout=5)
+            response = request(method=_METHOD[_UPDATED_USER],
+                               url=self.url + _UPDATED_USER, timeout=5)
         else:
-            response = requests.put(url=self.url + _UPDATED_USER + name,
-                                    json=params.to_dict(), timeout=5)
+            response = request(method=_METHOD[_UPDATED_USER],
+                               url=self.url + _UPDATED_USER + name,
+                               json=params.to_dict(), timeout=5)
             with allure.step(f'{_METHOD[_UPDATED_USER]} request to: '
                              f'{self.url + _UPDATED_USER + name}'):
                 self.logging_request(_METHOD[_UPDATED_USER],
@@ -126,8 +136,8 @@ class ApiConnector:
 
     def login_user(self, name: str = '', password: str = '') -> tuple:
         """logged user by username and password"""
-        response = requests.get(url=self.url + _LOGIN_USER,
-                                params=dict(username=name, password=password), timeout=5)
+        response = request(method=_METHOD[_LOGIN_USER], url=self.url + _LOGIN_USER,
+                           params=dict(username=name, password=password), timeout=5)
         with allure.step(f'{_METHOD[_LOGIN_USER]} request to: {self.url + _LOGIN_USER}'):
             self.logging_request(_METHOD[_LOGIN_USER],
                                  self.url + _LOGIN_USER, response.text)
@@ -135,7 +145,8 @@ class ApiConnector:
 
     def logout_user(self) -> tuple:
         """logout user from service"""
-        response = requests.get(url=self.url + _LOGOUT_USER, timeout=5)
+        response = request(method=_METHOD[_LOGOUT_USER],
+                           url=self.url + _LOGOUT_USER, timeout=5)
         with allure.step(f'{_METHOD[_LOGOUT_USER]} request to: {self.url + _LOGOUT_USER}'):
             self.logging_request(_METHOD[_LOGOUT_USER],
                                  self.url + _LOGOUT_USER, response.text)
