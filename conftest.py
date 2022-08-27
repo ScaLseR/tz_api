@@ -2,6 +2,8 @@
 import pytest
 from api_connector import ApiConnector, ParamsReq
 import logging
+import allure
+from allure_commons.types import AttachmentType
 
 logger = logging.getLogger("test_api")
 
@@ -12,6 +14,8 @@ def logging():
     logger.info('Start test')
     yield
     logger.info('Stop test')
+    with allure.step('Log file'):
+        allure.attach.file(r'logs/log.txt', 'log.txt', attachment_type=AttachmentType.TEXT)
 
 
 @pytest.fixture(scope='function')
