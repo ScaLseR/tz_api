@@ -107,7 +107,7 @@ class TestWithParam:
         with allure.step(f"Проверяем содержание поля message "
                          f"ответа {rez[1]['message']} == {z_id}"):
             assert rez[1]['message'] == str(z_id), \
-                f'Неверное значение поля message, получен {rez[1]}'
+                f'Неверное значение поля message, получен {rez[1]["message"]}'
 
     @allure.feature("Creates list of users /user/createWithList")
     @allure.story('Создаем список пользователей с указанием корректных параметров')
@@ -122,7 +122,7 @@ class TestWithParam:
         with allure.step(f"Проверяем содержание поля message "
                          f"ответа {rez[1]['message']} == 'ok'"):
             assert rez[1]['message'] == 'ok', \
-                f'Неверное значение поля message, получен {rez[1]}'
+                f'Неверное значение поля message, получен {rez[1]["message"]}'
 
     @allure.feature("Get user /user/{username}")
     @allure.story('Получаем информацию о пользователе по корректному параметру username')
@@ -136,7 +136,7 @@ class TestWithParam:
             assert rez[0] == 200, f'Неверный код ответа, получен {rez[0]}'
         with allure.step("Проверяем содержание поля username ответа"):
             assert rez[1]['username'] == 'test', \
-                f'Неверное значение поля username, получен {rez[1]}'
+                f'Неверное значение поля username, получен {rez[1]["username"]}'
 
     @allure.feature("Delete user /user/{username}")
     @allure.story('Удаляем пользователя по корректному параметру username')
@@ -149,9 +149,9 @@ class TestWithParam:
         with allure.step(f"Запрос отправлен, проверяем код ответа {rez[0]} == 200"):
             assert rez[0] == 200, f'Неверный код ответа, получен {rez[0]}'
         with allure.step(f"Проверяем содержание поля message "
-                         f"ответа {rez[1]['message']} == {name}"):
-            assert rez[1]['message'] == name, \
-                f'Неверное значение поля message, получен {rez[1]}'
+                         f"ответа {rez[1]['username']} == {name}"):
+            assert rez[1]['username'] == name, \
+                f'Неверное значение поля message, получен {rez[1]["username"]}'
 
     @allure.feature("Updated user /user/{username}")
     @allure.story('Обновляем пользователя по корректному параметру username')
@@ -167,9 +167,9 @@ class TestWithParam:
         with allure.step(f"Запрос отправлен, проверяем код ответа {rez[0]} == 200"):
             assert rez[0] == 200, f'Неверный код ответа, получен {rez[0]}'
         with allure.step(f"Проверяем содержание поля message "
-                         f"ответа {rez[1]['message']} == {str(z_id)}"):
-            assert rez[1]['message'] == str(z_id), \
-                f'Неверное значение поля message, получен {rez[1]}'
+                         f"ответа {rez[1]['id']} == {z_id}"):
+            assert rez[1]['id'] == z_id, \
+                f'Неверное значение поля message, получен {rez[1]["id"]}'
 
     @allure.feature("Login user into the system  /user/login")
     @allure.story('Выполняем вход пользователя по корректным параметрам username, password')
@@ -186,7 +186,7 @@ class TestWithParam:
         with allure.step(f"Проверяем содержание поля message ответа "
                          f"'logged in user session:' in {rez[1]['message']}"):
             assert 'logged in user session:' in rez[1]['message'], \
-                f'Неверное значение поля message, получен {rez[1]}'
+                f'Неверное значение поля message, получен {rez[1]["message"]}'
 
     @allure.feature("Logs out current logged users  /user/logout")
     @allure.story('Выполняем выход предварительно залогиненного пользователя')
@@ -203,7 +203,7 @@ class TestWithParam:
             assert rez[0] == 200, f'Неверный код ответа, получен {rez[0]}'
         with allure.step("Проверяем содержание поля message ответа"):
             assert rez[1]['message'] == 'ok', \
-                f'Неверное значение поля message, получен {rez[1]}'
+                f'Неверное значение поля message, получен {rez[1]["message"]}'
 
 
 class TestWrongParameters:
@@ -222,7 +222,7 @@ class TestWrongParameters:
         with allure.step(f"Проверяем содержание поля message ответа "
                          f"{rez[1]['message']} == 'bad input'"):
             assert rez[1]['message'] == 'bad input', \
-                f'Неверное значение поля message, получен {rez[1]}'
+                f'Неверное значение поля message, получен {rez[1]["message"]}'
 
     @allure.feature("Creates list of users /user/createWithList")
     @allure.story('Создаем пользователей списком с некорректным id')
@@ -237,7 +237,7 @@ class TestWrongParameters:
         with allure.step(f"Проверяем содержание поля message ответа "
                          f"{rez[1]['message']} == 'bad input'"):
             assert rez[1]['message'] == 'bad input', \
-                f'Неверное значение поля message, получен {rez[1]}'
+                f'Неверное значение поля message, получен {rez[1]["message"]}'
 
     @allure.feature("Get user /user/{username}")
     @allure.story('Получаем информацию о пользователе с некорректным username')
@@ -252,7 +252,7 @@ class TestWrongParameters:
         with allure.step(f"Проверяем содержание поля message ответа "
                          f"{rez[1]['message']} == 'User not found'"):
             assert rez[1]['message'] == 'User not found', \
-                f'Неверное значение поля message, получен {rez[1]}'
+                f'Неверное значение поля message, получен {rez[1]["message"]}'
 
     @allure.feature("Delete user /user/{username}")
     @allure.story('Удаляяем пользователя с некорректным username')
