@@ -1,9 +1,20 @@
 """fixtures"""
 import pytest
 from api_connector import ApiConnector, ParamsReq
+import logging
+
+logger = logging.getLogger("test_api")
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope='function', autouse=True)
+def logging():
+    """write to log start and stop test"""
+    logger.info('Start test')
+    yield
+    logger.info('Stop test')
+
+
+@pytest.fixture(scope='function')
 def api_con(url):
     """connection to api"""
     api_con = ApiConnector(url)
