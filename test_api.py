@@ -259,7 +259,7 @@ class TestWrongParameters:
     @pytest.mark.delete_user
     def test_delete_user_by_wrong_name(self, add_one_user):
         """deleted user by wrong name"""
-        name = 'test'
+        name = 'test1'
         with allure.step(f"Удаляяем пользователя username={name}"):
             rez = add_one_user.delete_user(name)
         with allure.step(f"Запрос отправлен, проверяем код ответа {rez[0]} == 404"):
