@@ -1,0 +1,4 @@
+2022-08-29 09:54:32 [32mINFO[0m Start test
+2022-08-29 09:54:32 [32mINFO[0m post request to: https://petstore.swagger.io/v2/user/createWithList
+2022-08-29 09:54:32 [32mINFO[0m response text - {"code":200,"type":"unknown","message":"ok"}
+2022-08-29 09:54:32 [32mINFO[0m Stop test

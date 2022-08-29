@@ -1,0 +1,4 @@
+2022-08-29 09:54:27 [32mINFO[0m Start test
+2022-08-29 09:54:27 [32mINFO[0m get request to: https://petstore.swagger.io/v2/user/
+2022-08-29 09:54:27 [32mINFO[0m response text - <?xml version="1.0" encoding="UTF-8" standalone="yes"?><apiResponse><type>unknown</type></apiResponse>
+2022-08-29 09:54:27 [32mINFO[0m Stop test

@@ -1,0 +1,10 @@
+2022-08-29 09:54:40 [32mINFO[0m Start test
+2022-08-29 09:54:41 [32mINFO[0m post request to: https://petstore.swagger.io/v2/user
+2022-08-29 09:54:41 [32mINFO[0m response text - {"code":200,"type":"unknown","message":"100"}
+2022-08-29 09:54:42 [32mINFO[0m get request to: https://petstore.swagger.io/v2/user/login
+2022-08-29 09:54:42 [32mINFO[0m response text - {"code":200,"type":"unknown","message":"logged in user session:1661756097003"}
+2022-08-29 09:54:42 [32mINFO[0m get request to: https://petstore.swagger.io/v2/user/logout
+2022-08-29 09:54:42 [32mINFO[0m response text - {"code":200,"type":"unknown","message":"ok"}
+2022-08-29 09:54:43 [32mINFO[0m get request to: https://petstore.swagger.io/v2/user/test
+2022-08-29 09:54:43 [32mINFO[0m response text - {"id":100,"username":"test","firstName":"","lastName":"","email":"","password":"12345","phone":"","userStatus":0}
+2022-08-29 09:54:43 [32mINFO[0m Stop test

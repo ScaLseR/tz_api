@@ -1,0 +1,4 @@
+2022-08-29 09:54:43 [32mINFO[0m Start test
+2022-08-29 09:54:44 [32mINFO[0m post request to: https://petstore.swagger.io/v2/user
+2022-08-29 09:54:44 [32mINFO[0m response text - {"code":500,"type":"unknown","message":"something bad happened"}
+2022-08-29 09:54:44 [32mINFO[0m Stop test
